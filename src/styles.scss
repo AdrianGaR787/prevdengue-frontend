@@ -1,1 +1,371 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+  @include mat.theme((
+    color: (
+      primary: mat.$green-palette,
+      tertiary: mat.$blue-palette,
+      theme-type: light,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+  height: 100%;
+}
+
+// ─── Variables CSS ───────────────────────────────────────────────────────────
+:root {
+  --primary:     #2E7D32;
+  --primary-light: #60AD5E;
+  --primary-dark:  #1B5E20;
+  --accent:      #1565C0;
+  --warn:        #E65100;
+  --danger:      #C62828;
+  --bg:          #F5F7FA;
+  --surface:     #FFFFFF;
+  --border:      #E0E0E0;
+  --text-primary:   #212121;
+  --text-secondary: #757575;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+// ─── Reset y base ────────────────────────────────────────────────────────────
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+}
+
+// ─── Clases utilitarias ───────────────────────────────────────────────────────
+.page-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    mat-icon { color: var(--primary); }
+  }
+}
+
+.card {
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+// ─── Tabla ────────────────────────────────────────────────────────────────────
+.table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+
+  table {
+    width: 100%;
+    background: var(--surface);
+  }
+
+  th.mat-header-cell {
+    background: var(--primary);
+    color: white !important;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 12px 16px;
+  }
+
+  td.mat-cell {
+    padding: 10px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tr.mat-row:hover {
+    background: #F1F8E9;
+    cursor: pointer;
+  }
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+
+  mat-form-field { flex: 1; min-width: 200px; }
+}
+
+// ─── Chips de estado ─────────────────────────────────────────────────────────
+.status-chip {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  display: inline-block;
+
+  &.pendiente   { background: #FFF8E1; color: #F57F17; }
+  &.en-proceso  { background: #E3F2FD; color: #1565C0; }
+  &.completado  { background: #E8F5E9; color: #2E7D32; }
+  &.cerrado     { background: #F3E5F5; color: #6A1B9A; }
+  &.cancelado   { background: #FFEBEE; color: #C62828; }
+  &.programado  { background: #E0F7FA; color: #00695C; }
+  &.activo      { background: #E8F5E9; color: #2E7D32; }
+  &.inactivo    { background: #F5F5F5; color: #757575; }
+}
+
+.risk-chip {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  display: inline-block;
+
+  &.bajo      { background: #E8F5E9; color: #2E7D32; }
+  &.medio     { background: #FFF8E1; color: #F57F17; }
+  &.alto      { background: #FFF3E0; color: #E65100; }
+  &.critico   { background: #FFEBEE; color: #C62828; }
+}
+
+.role-chip {
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+
+  &.ADMIN      { background: #EDE7F6; color: #4527A0; }
+  &.CIUDADANO  { background: #E0F2F1; color: #004D40; }
+  &.BRIGADISTA { background: #FFF8E1; color: #E65100; }
+}
+
+// ─── Botones de acciones ──────────────────────────────────────────────────────
+.action-buttons {
+  display: flex;
+  gap: 4px;
+
+  button[mat-icon-button] {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+
+    mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  }
+}
+
+// ─── Stats cards ─────────────────────────────────────────────────────────────
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-left: 4px solid var(--primary);
+
+  &.accent { border-left-color: var(--accent); }
+  &.warn   { border-left-color: var(--warn); }
+  &.danger { border-left-color: var(--danger); }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #E8F5E9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon { color: var(--primary); font-size: 24px; }
+  }
+
+  &.accent .stat-icon { background: #E3F2FD; mat-icon { color: var(--accent); } }
+  &.warn   .stat-icon { background: #FFF3E0; mat-icon { color: var(--warn); } }
+  &.danger .stat-icon { background: #FFEBEE; mat-icon { color: var(--danger); } }
+
+  .stat-info {
+    h3 { margin: 0; font-size: 28px; font-weight: 700; color: var(--text-primary); }
+    p  { margin: 2px 0 0; font-size: 13px; color: var(--text-secondary); }
+  }
+}
+
+// ─── Login page ───────────────────────────────────────────────────────────────
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 40%, #1565C0 100%);
+}
+
+.auth-card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 40px;
+  width: 420px;
+  max-width: 95vw;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+
+  .auth-logo {
+    text-align: center;
+    margin-bottom: 24px;
+
+    mat-icon { font-size: 48px; width: 48px; height: 48px; color: var(--primary); }
+    h1 { margin: 8px 0 0; font-size: 24px; font-weight: 700; color: var(--primary-dark); }
+    p  { margin: 4px 0 0; color: var(--text-secondary); font-size: 14px; }
+  }
+
+  mat-form-field { width: 100%; }
+
+  .auth-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+
+    button[mat-raised-button] { width: 100%; padding: 12px; font-size: 15px; }
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+    color: var(--text-secondary);
+    font-size: 13px;
+
+    &::before, &::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+  }
+
+  .google-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    background: white;
+    font-size: 14px;
+    color: var(--text-primary);
+    transition: background .15s;
+
+    &:hover { background: #F5F5F5; }
+
+    img { width: 20px; height: 20px; }
+  }
+
+  .auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--text-secondary);
+
+    a { color: var(--primary); text-decoration: none; font-weight: 500; }
+  }
+}
+
+// ─── Map ────────────────────────────────────────────────────────────────────
+.map-container {
+  width: 100%;
+  height: 400px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+google-map { width: 100% !important; height: 100% !important; }
+
+// ─── Dialog ──────────────────────────────────────────────────────────────────
+.dialog-container {
+  min-width: 480px;
+  max-width: 95vw;
+
+  h2[mat-dialog-title] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-dark);
+  }
+}
+
+// ─── Form ────────────────────────────────────────────────────────────────────
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+
+  @media (max-width: 600px) { grid-template-columns: 1fr; }
+
+  mat-form-field { width: 100%; }
+
+  .full-width { grid-column: 1 / -1; }
+}
+
+// ─── Responsive ──────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .page-container { padding: 12px; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+}
+
+// ─── Scrollbar ────────────────────────────────────────────────────────────────
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #F5F5F5; }
+::-webkit-scrollbar-thumb { background: #BDBDBD; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #9E9E9E; }
