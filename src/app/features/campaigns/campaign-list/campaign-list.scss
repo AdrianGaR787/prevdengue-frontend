@@ -1,0 +1,26 @@
+.campaign-container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.campaign-list {
+  margin-top: 20px;
+}

@@ -1,1 +1,21 @@
-<p>campaign-list works!</p>
+<div class="campaign-container">
+
+ <h1>Gestión de Campañas</h1>
+ <button>Crear Campaña</button>
+  
+  
+  <hr>
+  <!-- Subtítulo -->
+  <p class="subtitle">
+    Aquí se mostrarán las campañas de intervención contra el dengue.
+  </p>
+
+  <!-- Lista -->
+  <div class="campaign-list">
+
+    <p *ngIf="campaigns?.length === 0">
+      No hay campañas registradas aún.
+    </p>
+  </div>
+
+</div>
