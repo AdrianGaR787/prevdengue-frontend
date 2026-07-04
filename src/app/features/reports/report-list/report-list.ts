@@ -1,26 +1,52 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { ReportService } from '../../../services/report.service'; // Tu servicio
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { ReportService } from '../../../core/services/report';
+import { ReportDTO } from '../../../core/models/Report';
+import { RouterModule } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-report-list',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatIconModule], // Importante importar MatTableModule aquí
+  imports: [CommonModule, MatTableModule, MatCardModule, MatButtonModule, MatIconModule, DatePipe, RouterModule],
   templateUrl: './report-list.html',
-  styleUrls: ['./report-list.scss']
+  styleUrls: ['./report-list.css']
 })
 export class ReportListComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'description', 'date', 'coordinates', 'status'];
-  dataSource: any[] = []; // O usa MatTableDataSource
+  // Las columnas que mostraremos en la tabla
+  displayedColumns: string[] = ['id', 'user', 'hatchery', 'status', 'date', 'district','symptoms', 'description', 'actions'];
+  reports: ReportDTO[] = [];
 
-  constructor(private reportService: ReportService) {}
+  private reportService = inject(ReportService);
+  private snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
-    this.reportService.getAll().subscribe({
-      next: (data) => this.dataSource = data,
-      error: (err) => console.error(err)
+    this.loadReports();
+  }
+
+  loadReports() {
+    this.reportService.list().subscribe({
+      next: (data) => {
+        this.reports = data;
+        console.log('Reportes cargados:', data);
+      },
+      error: (err) => console.error('Error al cargar reportes', err)
     });
+  }
+  deleteReport(id: number) {
+    if (confirm('¿Estás seguro de que deseas eliminar este reporte?')) {
+      this.reportService.delete(id).subscribe({
+        next: () => {
+          this.snackBar.open('Reporte eliminado correctamente', 'Cerrar', { duration: 3000 });
+          this.loadReports(); // Refresca la tabla automáticamente
+        },
+        error: (err) => console.error('Error al eliminar el reporte:', err)
+      });
+    }
   }
 }

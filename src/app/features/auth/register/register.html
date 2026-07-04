@@ -1,1 +1,53 @@
-<p>register works!</p>
+<div class="register-container" style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: var(--bg-app);">
+  <mat-card style="width: 400px; padding: 20px;">
+    <mat-card-header style="justify-content: center; margin-bottom: 20px;">
+      <mat-card-title>Crear Cuenta Ciudadana</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+        
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-label>Nombre Completo</mat-label>
+          <input matInput [(ngModel)]="user.name" name="name" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput type="email" [(ngModel)]="user.email" name="email" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-label>Teléfono</mat-label>
+          <input matInput [(ngModel)]="user.phone" name="phone" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" [(ngModel)]="user.passwordHash" name="passwordHash" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Idioma preferido</mat-label>
+            <mat-select [(ngModel)]="user.preferredLanguage" name="preferredLanguage" required>
+                <mat-option value="ES">ES</mat-option>
+                <mat-option value="EN">EN</mat-option>
+                <mat-option value="FR">FR</mat-option>
+                <mat-option value="PT">PT</mat-option>
+                <mat-option value="DE">DE</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <button mat-raised-button color="primary" type="submit" style="width: 100%; margin-top: 10px;" [disabled]="registerForm.invalid">
+          Registrarse
+        </button>
+        
+        <div style="text-align: center; margin-top: 15px;">
+          <a routerLink="/login" style="color: #3f51b5; text-decoration: none;">¿Ya tienes cuenta? Inicia sesión aquí</a>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

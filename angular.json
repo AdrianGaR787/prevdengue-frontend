@@ -3,17 +3,13 @@
   "version": 1,
   "cli": {
     "packageManager": "npm",
-    "analytics": "15ed6f19-153a-4a6c-af9f-515fd402e579"
+    "analytics": "f3b8dbe4-f66e-4d07-9ec9-423aff90c3a5"
   },
   "newProjectRoot": "projects",
   "projects": {
-    "prev-dengue": {
+    "PrevDengue-Front": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
+      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -23,24 +19,13 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "security": {
-              "allowedHosts": []
-            },
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "styles": ["src/material-theme.scss", "src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -70,12 +55,13 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "prev-dengue:build:production"
+              "buildTarget": "PrevDengue-Front:build:production"
             },
             "development": {
-              "buildTarget": "prev-dengue:build:development"
+              "buildTarget": "PrevDengue-Front:build:development"
             }
           },
+          "options": { "proxyConfig": "proxy.conf.json" },
           "defaultConfiguration": "development"
         },
         "test": {

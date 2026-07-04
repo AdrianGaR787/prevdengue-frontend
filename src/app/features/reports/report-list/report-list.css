@@ -1,0 +1,12 @@
+.table-container {
+  margin: 20px;
+}
+.w-100 {
+  width: 100%;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}

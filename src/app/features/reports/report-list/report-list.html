@@ -1,15 +1,76 @@
-<div class="page">
+<div class="table-container">
+  <mat-card>
+    <mat-card-header class="card-header">
+      <mat-card-title>Gestión de Reportes</mat-card-title>
+      <button mat-raised-button color="primary" routerLink="/dashboard/reportes/nuevo">
+      <mat-icon>add</mat-icon>
+        Nuevo Reporte
+      </button>
+    </mat-card-header>
 
-  <h1>Gestión de Reportes</h1>
+    <mat-card-content>
+      <table mat-table [dataSource]="reports" class="mat-elevation-z8 w-100">
 
-  <button>
-    Nuevo Reporte
-  </button>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.idReport}} </td>
+        </ng-container>
 
-  <hr>
+        <ng-container matColumnDef="user">
+          <th mat-header-cell *matHeaderCellDef> Ciudadano </th>
+          <td mat-cell *matCellDef="let element"> 
+            {{ element.isAnonymous ? 'Anónimo' : element.user?.name }}
+          </td>
+        </ng-container>
 
-  <p>
-    Aquí se mostrarán los reportes de criaderos de mosquitos.
-  </p>
+        <ng-container matColumnDef="hatchery">
+          <th mat-header-cell *matHeaderCellDef> Tipo de Criadero </th>
+          <td mat-cell *matCellDef="let element"> {{element.hatcheryType?.nameHatchery}} </td>
+        </ng-container>
 
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Estado </th>
+          <td mat-cell *matCellDef="let element"> {{element.status?.nameStatus}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Fecha </th>
+          <td mat-cell *matCellDef="let element"> {{element.reportDate | date:'dd/MM/yyyy HH:mm'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="district">
+          <th mat-header-cell *matHeaderCellDef> Distrito </th>
+          <td mat-cell *matCellDef="let element"> {{element.district?.nameDistrict}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="symptoms">
+          <th mat-header-cell *matHeaderCellDef> Síntomas </th>
+          <td mat-cell *matCellDef="let element"> 
+            {{element.symptoms?.map(s => s.nameSymptom).join(', ')}} 
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef> Descripción </th>
+          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="accent" [routerLink]="['/dashboard/reportes/editar', element.idReport]">
+              <mat-icon>edit</mat-icon>
+            </button>
+    
+            <button mat-icon-button color="warn" (click)="deleteReport(element.idReport)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
 </div>

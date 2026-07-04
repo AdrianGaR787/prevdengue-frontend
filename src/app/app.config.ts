@@ -1,18 +1,20 @@
-// src/app/app.config.ts
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter, withViewTransitions } from '@angular/router';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { authInterceptor } from './interceptors/auth-interceptor';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './core/auth/auth.interceptor';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideRouter(routes, withViewTransitions()),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes), 
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withInterceptors([authInterceptor]), withFetch()),
-    provideAnimationsAsync(),
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([authInterceptor]) // ¡Interceptor conectado!
+    ),
+    provideAnimationsAsync() // Para Angular Material
   ]
 };

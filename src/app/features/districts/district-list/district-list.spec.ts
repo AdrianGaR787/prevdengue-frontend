@@ -8,9 +8,8 @@ describe('DistrictList', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DistrictList]
-    })
-    .compileComponents();
+      imports: [DistrictList],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DistrictList);
     component = fixture.componentInstance;

@@ -1,0 +1,71 @@
+<div class="insert-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ isEditMode ? 'Modificar Reporte' : 'Registrar Nuevo Reporte' }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="form-content">
+      <form (ngSubmit)="onSave()" #reportForm="ngForm">
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descripción del hallazgo</mat-label>
+          <textarea matInput [(ngModel)]="report.description" name="description" rows="3" required></textarea>
+        </mat-form-field>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Latitud</mat-label>
+            <input matInput type="number" [(ngModel)]="report.latitude" name="latitude" required>
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Longitud</mat-label>
+            <input matInput type="number" [(ngModel)]="report.longitude" name="longitude" required>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tipo de Criadero</mat-label>
+          <mat-select [(ngModel)]="report.hatcheryType.idHatcheryType" name="hatcheryType" required>
+            <mat-option [value]="1">Llantas abandonadas</mat-option>
+            <mat-option [value]="2">Baldes o cilindros sin tapa</mat-option>
+            <mat-option [value]="3">Piscinas sin mantenimiento</mat-option>
+            <mat-option [value]="4">Floreros con agua</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Distrito</mat-label>
+          <mat-select [(ngModel)]="report.district.idDistrict" name="district" required>
+            @for (d of distritos; track d.idDistrict) {
+              <mat-option [value]="d.idDistrict">{{ d.nameDistrict }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Síntomas que presenta</mat-label>
+          <mat-select [(ngModel)]="selectedSymptoms" name="symptoms" multiple>
+            @for (s of sintomas; track s.idSymptom) {
+              <mat-option [value]="s.idSymptom">{{ s.nameSymptom }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <div class="checkbox-container">
+          <mat-checkbox [(ngModel)]="report.isAnonymous" name="isAnonymous" color="primary">
+            Deseo que este reporte sea anónimo
+          </mat-checkbox>
+        </div>
+
+        <div class="button-group">
+          <button mat-button type="button" routerLink="/dashboard/reportes">Cancelar</button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="!reportForm.valid">
+            Guardar Reporte
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

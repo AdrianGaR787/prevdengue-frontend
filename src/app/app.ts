@@ -1,13 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  standalone: true, // si estás usando Angular standalone
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrls: ['./app.scss'] // plural y array
+  styleUrl: './app.css'
 })
 export class App {
-  title = 'PrevDengue Frontend'; // agrega la propiedad
+  protected readonly title = signal('PrevDengue-Front');
 }

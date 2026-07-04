@@ -1,0 +1,50 @@
+.spacer {
+  flex: 1 1 auto;
+}
+.content-container {
+  padding: 30px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Diseño del Navbar */
+.main-navbar {
+  background-color: var(--primary-dark) !important; /* Azul Profundo */
+  color: var(--white) !important;
+  padding: 0 30px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  height: 70px;
+}
+
+/* Título y Eslogan */
+.brand-container {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.brand-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+.brand-slogan {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--primary-light); /* Azul clarito */
+  letter-spacing: 0.5px;
+}
+
+/* Botones del menú transparentes pero estéticos */
+.nav-buttons button {
+  color: var(--white);
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 600;
+  margin: 0 5px;
+}
+.nav-buttons button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.btn-warning {
+  color: var(--warning) !important; /* Amarillo de alerta */
+}
