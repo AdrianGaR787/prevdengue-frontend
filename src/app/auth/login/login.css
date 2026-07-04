@@ -1,0 +1,41 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--bg-app); /* Usando tu variable gris relajante */
+}
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 30px 20px;
+}
+.header-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 25px;
+  text-align: center;
+}
+.brand-title {
+  color: var(--primary); /* Azul de confianza */
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+.brand-slogan {
+  color: var(--cta-orange); /* Llamado a la acción naranja */
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+}
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+.error-text {
+  color: var(--danger); /* Rojo crítico */
+  font-size: 14px;
+  text-align: center;
+  font-weight: 600;
+}

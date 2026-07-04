@@ -1,0 +1,16 @@
+<div class="welcome-container">
+  <div class="welcome-header">
+    <h1>{{ userName ? '¡Hola, ' + userName + '!' : '¡Bienvenido a PrevDengue!' }}</h1>
+    <p>Tu alerta puede salvar vidas. Elige qué quieres hacer hoy:</p>
+  </div>
+
+  <div class="quick-links-grid">
+    @for (link of quickLinks; track link.route) {
+      <mat-card class="quick-link-card" [routerLink]="link.route">
+        <mat-icon class="quick-link-icon" [style.color]="link.color">{{ link.icon }}</mat-icon>
+        <mat-card-title>{{ link.label }}</mat-card-title>
+        <mat-card-content>{{ link.description }}</mat-card-content>
+      </mat-card>
+    }
+  </div>
+</div>

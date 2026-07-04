@@ -1,0 +1,78 @@
+<div class="register-container" style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: var(--bg-app);">
+  <mat-card style="width: 400px; padding: 20px;">
+    <mat-card-header style="justify-content: center; margin-bottom: 20px;">
+      <mat-card-title>Crear Cuenta Ciudadana</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+         
+        <!-- 1. NOMBRE (Solo letras, mín 3 caracteres) -->
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-label>Nombre Completo</mat-label>
+          <input matInput [(ngModel)]="user.name" name="name" required minlength="3" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" #nameField="ngModel">
+          <mat-icon matSuffix color="primary">badge</mat-icon>
+          @if (nameField.invalid && (nameField.dirty || nameField.touched)) {
+            @if (nameField.hasError('required')) { <mat-error>El nombre es obligatorio.</mat-error> }
+            @if (nameField.hasError('minlength')) { <mat-error>Mínimo 3 caracteres.</mat-error> }
+            @if (nameField.hasError('pattern')) { <mat-error>Solo se permiten letras.</mat-error> }
+          }
+        </mat-form-field>
+
+        <!-- 2. CORREO (Validación de formato email) -->
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput type="email" [(ngModel)]="user.email" name="email" required email #emailField="ngModel">
+          <mat-icon matSuffix color="primary">mail</mat-icon>
+          @if (emailField.invalid && (emailField.dirty || emailField.touched)) {
+            @if (emailField.hasError('required')) { <mat-error>El correo es obligatorio.</mat-error> }
+            @if (emailField.hasError('email')) { <mat-error>Ingresa un correo válido (ej: ana@gmail.com).</mat-error> }
+          }
+        </mat-form-field>
+
+        <!-- 3. TELÉFONO (Celular de Perú: Empieza con 9 y tiene 9 dígitos) -->
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-label>Teléfono (Celular)</mat-label>
+          <input matInput [(ngModel)]="user.phone" name="phone" required pattern="^9[0-9]{8}$" #phoneField="ngModel">
+          <mat-icon matSuffix color="primary">smartphone</mat-icon>
+          <mat-hint>Ejemplo: 987654321</mat-hint>
+          @if (phoneField.invalid && (phoneField.dirty || phoneField.touched)) {
+            @if (phoneField.hasError('required')) { <mat-error>El celular es obligatorio.</mat-error> }
+            @if (phoneField.hasError('pattern')) { <mat-error>Debe empezar con 9 y tener 9 dígitos.</mat-error> }
+          }
+        </mat-form-field>
+
+        <!-- 4. CONTRASEÑA (Mínimo 6 caracteres para mayor seguridad) -->
+        <mat-form-field appearance="outline" style="width: 100%; margin-top: 10px;">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" [(ngModel)]="user.passwordHash" name="passwordHash" required minlength="6" #passwordField="ngModel">
+          <mat-icon matSuffix color="primary">lock</mat-icon>
+          @if (passwordField.invalid && (passwordField.dirty || passwordField.touched)) {
+            @if (passwordField.hasError('required')) { <mat-error>La contraseña es obligatoria.</mat-error> }
+            @if (passwordField.hasError('minlength')) { <mat-error>La contraseña debe tener mínimo 6 caracteres.</mat-error> }
+          }
+        </mat-form-field>
+
+        <!-- 5. IDIOMA -->
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Idioma preferido</mat-label>
+            <mat-select [(ngModel)]="user.preferredLanguage" name="preferredLanguage" required>
+                <mat-option value="ES">Español (ES)</mat-option>
+                <mat-option value="EN">Inglés (EN)</mat-option>
+                <mat-option value="PT">Portugués (PT)</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- BOTÓN: Se desactiva automáticamente si alguna validación falla -->
+        <button mat-flat-button color="primary" type="submit" style="width: 100%; margin-top: 10px; padding: 24px 0; font-size: 16px;" [disabled]="registerForm.invalid">
+          Crear Cuenta
+        </button>
+                 
+        <div style="text-align: center; margin-top: 20px;">
+          <span style="color: var(--text-muted)">¿Ya tienes cuenta? </span>
+          <a routerLink="/login" style="color: var(--primary); font-weight: bold; text-decoration: none;">Inicia sesión aquí</a>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

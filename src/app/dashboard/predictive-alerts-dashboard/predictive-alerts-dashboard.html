@@ -1,0 +1,53 @@
+<div style="padding: 20px;">
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div>
+      <h2 style="color: #1a237e; font-weight: bold; margin: 0; display: flex; align-items: center; gap: 10px;">
+        <mat-icon>analytics</mat-icon> Monitor Predictivo de Zonas de Riesgo
+      </h2>
+      <p style="color: #666; margin-top: 5px;">
+        Análisis generado automáticamente por el sistema basado en densidad de reportes y validaciones vecinales.
+      </p>
+    </div>
+    
+    <div style="background-color: #ffebee; color: #c62828; padding: 10px 20px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; gap: 10px;">
+      <mat-icon>notifications_active</mat-icon>
+      Zonas Críticas: {{ alertasActivas.length }}
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+    
+    <mat-card *ngFor="let alerta of alertas" 
+              [ngStyle]="{'border-top': '5px solid ' + getColorPorRiesgo(alerta.riskLevel.idRiskLevel)}"
+              style="border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+      
+      <mat-card-header style="padding: 15px; padding-bottom: 0;">
+        <div mat-card-avatar [ngStyle]="{'background-color': getColorPorRiesgo(alerta.riskLevel.idRiskLevel)}" 
+             style="color: white; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+          <mat-icon>{{ getIconoPorRiesgo(alerta.riskLevel.idRiskLevel) }}</mat-icon>
+        </div>
+        <mat-card-title style="font-size: 1.1rem; color: #333;">{{ alerta.district.nameDistrict }}</mat-card-title>
+        <mat-card-subtitle [ngStyle]="{'color': getColorPorRiesgo(alerta.riskLevel.idRiskLevel), 'font-weight': 'bold'}">
+          Riesgo {{ alerta.riskLevel.nameRiskLevel || alerta.riskLevel.nameRiskLevel }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content style="padding: 15px;">
+        <p style="color: #555; margin-bottom: 15px; min-height: 40px;">
+          {{ alerta.description }}
+        </p>
+        
+        <div style="font-size: 0.8rem; color: #888; display: flex; justify-content: space-between; align-items: center;">
+          <span>Última actualización:</span>
+          <strong>{{ alerta.alertDate | date:'medium' }}</strong>
+        </div>
+        <mat-progress-bar mode="determinate" 
+                          [value]="alerta.riskLevel.idRiskLevel === 3 ? 100 : (alerta.riskLevel.idRiskLevel === 2 ? 60 : 20)" 
+                          [ngStyle]="{'margin-top': '10px'}">
+        </mat-progress-bar>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>

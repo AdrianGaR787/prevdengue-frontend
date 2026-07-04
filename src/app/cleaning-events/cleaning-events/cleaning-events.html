@@ -1,0 +1,103 @@
+<div class="events-container" style="padding: 20px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2 style="color: #1a237e; font-weight: bold; margin: 0;">
+      Próximos Eventos de Limpieza
+    </h2>
+    <button mat-raised-button color="accent" (click)="abrirDialogoCreacion()">
+        <mat-icon>add</mat-icon> Organizar Evento
+    </button>
+  </div>
+  <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; display: flex; gap: 20px; align-items: center;">
+    <mat-icon color="primary">filter_list</mat-icon>
+    <span style="font-weight: 500; color: #555;">Filtrar por:</span>
+    
+    <mat-form-field appearance="outline" style="margin-bottom: -1.25em;">
+      <mat-label>Estado del Evento</mat-label>
+      <mat-select [(ngModel)]="filtroEstado" (selectionChange)="aplicarFiltros()">
+        <mat-option value="TODOS">Todos los eventos</mat-option>
+        <mat-option value="PROGRAMADO">📅 Programados</mat-option>
+        <mat-option value="EN PROCESO">🚧 En Proceso</mat-option>
+        <mat-option value="LLENO">🔥 Llenos</mat-option>
+        <mat-option value="FINALIZADO">✅ Finalizados</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+    
+    <mat-card *ngFor="let event of filteredEvents" style="border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <mat-card-header style="background-color: #e3f2fd; padding: 15px;">
+        <div mat-card-avatar style="background-color: #1976d2; color: white; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+          <mat-icon>cleaning_services</mat-icon>
+        </div>
+        <mat-card-title style="font-size: 1.1rem; color: #1a237e;">{{ event.title }}</mat-card-title>
+        <mat-card-subtitle>{{ event.eventDate | date:'medium' }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <!-- Contenido principal -->
+      <mat-card-content style="padding-top: 15px;">
+        <p style="color: #666; display: flex; align-items: center; gap: 5px;">
+          <mat-icon color="primary" style="font-size: 20px;">person</mat-icon> 
+          <strong>Organizado por:</strong> {{ event.creatorUser?.name ? event.creatorUser?.name : (event.creatorUser?.email || 'Admin/Brigadista') }}
+        </p>
+
+        <p style="color: #666; display: flex; align-items: center; gap: 5px; margin-top: 10px;">
+          <mat-icon [ngStyle]="{'color': event.status === 'EN PROCESO' ? 'green' : 'red'}" style="font-size: 20px;">info</mat-icon> 
+          <strong>Estado:</strong> {{ event.status }}
+        </p>
+
+        <!-- Bloque de asistentes -->
+        <div style="margin-top: 20px; background-color: #f9f9f9; padding: 10px; border-radius: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <span style="font-weight: 500; color: #555;">
+              Asistentes: {{ getInscritos(event) }} / {{ event.maxCapacity }}
+            </span>
+            
+            <button mat-button color="primary" style="font-size: 0.8rem; padding: 0 10px; min-width: auto; line-height: 24px;" 
+                    (click)="verAsistentes(event.participants)">
+              <mat-icon style="font-size: 16px; width: 16px; height: 16px; margin-right: 4px;">visibility</mat-icon> Ver lista
+            </button>
+
+          </div>
+          <mat-progress-bar mode="determinate" 
+                            [value]="(getInscritos(event) / event.maxCapacity) * 100"
+                            [color]="getInscritos(event) >= event.maxCapacity ? 'warn' : 'primary'">
+          </mat-progress-bar>
+        </div>
+      </mat-card-content>
+
+      <!-- Acciones -->
+      <mat-card-actions style="display: flex; justify-content: space-between; padding: 15px; border-top: 1px solid #eee;">
+        <button mat-icon-button color="primary" matTooltip="Ver en mapa"
+                (click)="abrirEnMapa(event.latitude, event.longitude)">
+          <mat-icon>location_on</mat-icon>
+        </button>
+
+        <button mat-icon-button color="warn" matTooltip="Eliminar Evento"
+                  (click)="eliminarEvento(event.idEvent)">
+            <mat-icon>delete</mat-icon>
+          </button>
+
+        <button mat-raised-button 
+                [color]="yaEstaInscrito(event) ? 'primary' : 'accent'" 
+                [disabled]="event.status === 'LLENO' || event.status === 'FINALIZADO' || event.status === 'EN PROCESO' || yaEstaInscrito(event)"
+                (click)="unirseAEvento(event.idEvent)">
+          <mat-icon>{{ yaEstaInscrito(event) ? 'check_circle' : 'volunteer_activism' }}</mat-icon> 
+          {{ yaEstaInscrito(event) ? 'Ya Inscrito' : 'Unirme' }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Mensaje cuando no hay eventos -->
+    <div *ngIf="allEvents.length === 0" style="grid-column: 1 / -1; text-align: center; color: #666; padding: 40px;">
+      <mat-icon style="font-size: 48px; height: 48px; width: 48px; color: #ccc;">event_busy</mat-icon>
+      <p>No hay eventos de limpieza programados en este momento.</p>
+    </div>
+
+    <div *ngIf="allEvents.length > 0 && filteredEvents.length === 0" style="grid-column: 1 / -1; text-align: center; color: #666; padding: 40px;">
+      <mat-icon style="font-size: 48px; height: 48px; width: 48px; color: #ccc;">search_off</mat-icon>
+      <p>No se encontraron eventos con el estado "{{ filtroEstado }}".</p>
+    </div>
+
+  </div>
+</div>

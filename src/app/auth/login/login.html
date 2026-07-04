@@ -1,0 +1,54 @@
+<div class="login-container">
+  <mat-card class="login-card mat-elevation-z4">
+    <img src="logo.jpg" alt="Logo PrevDengue" class="brand-logo-nav">
+    <mat-card-header class="header-center">
+      <mat-card-title class="brand-title">PrevDengue</mat-card-title>
+      <mat-card-subtitle class="brand-slogan">Tu alerta puede salvar vidas.</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput [(ngModel)]="credentials.username" name="username" required>
+          <mat-icon matSuffix color="primary">person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" [(ngModel)]="credentials.password" name="password" required>
+          <mat-icon matSuffix color="primary">lock</mat-icon>
+        </mat-form-field>
+
+        <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+          <span style="color: var(--text-muted)">¿Eres un nuevo ciudadano? </span>
+          <button mat-button color="accent" routerLink="/registro" type="button">
+            ¡Regístrate aquí!
+          </button>
+        </div>
+
+        @if (errorMessage) {
+          <p class="error-text">{{ errorMessage }}</p>
+        }
+
+        <button mat-flat-button color="primary" class="full-width" type="submit" [disabled]="!loginForm.valid" style="padding: 24px 0; font-size: 16px;">
+          Iniciar Sesión
+        </button>
+
+        <div style="display: flex; align-items: center; text-align: center; margin: 20px 0; color: var(--text-muted);">
+          <hr style="flex: 1; border: none; border-top: 1px solid #e2e8f0;">
+          <span style="padding: 0 15px; font-size: 13px;">o ingresar con</span>
+          <hr style="flex: 1; border: none; border-top: 1px solid #e2e8f0;">
+        </div>
+
+        @if (isBrowser()) {
+          <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;">
+            <asl-google-signin-button type="standard" size="large" theme="outline" [width]="300">
+            </asl-google-signin-button>
+          </div>
+        }
+        
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
