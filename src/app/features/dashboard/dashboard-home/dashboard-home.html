@@ -1,0 +1,93 @@
+<div class="dashboard-container">
+  
+  <div class="welcome-header">
+    <h1 style="margin: 0; color: var(--primary-dark); font-weight: 700;">Panel de Control y Analítica</h1>
+    <p style="margin: 0; color: var(--text-muted);">Resumen general de las alertas en PrevDengue.</p>
+  </div>
+
+  <div class="stats-grid">
+    
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-icon style="color: var(--primary);">pending_actions</mat-icon>
+        <mat-card-title>Reportes por Estado</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @for (item of estadosStats; track item.name) {
+          <div class="bar-container">
+            <div class="bar-header">
+              <span>{{ item.name }}</span>
+              <span class="bar-count">{{ item.count }}</span>
+            </div>
+            <div class="bar-bg">
+              <div class="bar-fill bg-success" [style.width.%]="item.percent"></div>
+            </div>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-icon style="color: var(--cta-orange);">location_city</mat-icon>
+        <mat-card-title>Zonas de Mayor Riesgo (Con más reportes)</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @for (item of distritosStats; track item.name) {
+          <div class="bar-container">
+            <div class="bar-header">
+              <span>{{ item.name }}</span>
+              <span class="bar-count">{{ item.count }}</span>
+            </div>
+            <div class="bar-bg">
+              <div class="bar-fill bg-warning" [style.width.%]="item.percent"></div>
+            </div>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-icon style="color: var(--danger);">bug_report</mat-icon>
+        <mat-card-title>Principales Criaderos (Criaderos con más reportes)</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @for (item of criaderosStats; track item.name) {
+          <div class="bar-container">
+            <div class="bar-header">
+              <span>{{ item.name }}</span>
+              <span class="bar-count">{{ item.count }}</span>
+            </div>
+            <div class="bar-bg">
+              <div class="bar-fill bg-danger" [style.width.%]="item.percent"></div>
+            </div>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-icon style="color: var(--danger);">coronavirus</mat-icon>
+        <mat-card-title>Casos con Múltiples Síntomas</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="critical-list">
+          @for (rep of reportesCriticos; track rep.idReporte) {
+            <div class="critical-item">
+              <div class="critical-info">
+                <strong>Reporte #{{ rep.idReporte }}</strong>
+                <span class="critical-desc">{{ rep.descripcion }}</span>
+              </div>
+              <div class="critical-badge">
+                {{ rep.cantidadSintomas }} Síntomas
+              </div>
+            </div>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>

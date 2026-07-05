@@ -1,0 +1,121 @@
+<div class="form-page">
+  <mat-card class="form-card form-card-wide mat-elevation-z2">
+    
+    <div class="form-card-header">
+      <div class="form-card-icon">
+        <mat-icon>people</mat-icon>
+      </div>
+      <h2 class="form-card-title">{{ isEditMode ? 'Editar Usuario' : 'Nuevo Usuario' }}</h2>
+      <p class="form-card-subtitle">{{ isEditMode ? 'Actualiza los datos de este usuario.' : 'Registra un nuevo usuario del sistema.' }}</p>
+    </div>
+
+    <mat-card-content>
+      @if (loading) {
+        <div class="form-loading">
+          <mat-spinner diameter="36"></mat-spinner>
+          <span>Cargando usuario...</span>
+        </div>
+      } @else {
+      <form (ngSubmit)="onSave()" #userForm="ngForm">
+        
+        <mat-form-field appearance="outline" class="form-field-full">
+          <mat-label>Nombre Completo</mat-label>
+          <input matInput [(ngModel)]="user.name" name="name" required minlength="3" maxlength="80" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" #nameField="ngModel">
+          <mat-icon matSuffix>badge</mat-icon>
+          @if (nameField.invalid && (nameField.dirty || nameField.touched)) {
+            @if (nameField.hasError('required')) { <mat-error>El nombre es obligatorio.</mat-error> }
+            @if (nameField.hasError('minlength')) { <mat-error>Mínimo 3 caracteres.</mat-error> }
+            @if (nameField.hasError('pattern')) { <mat-error>Solo se permiten letras.</mat-error> }
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field-full">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput type="email" [(ngModel)]="user.email" name="email" required email #emailField="ngModel">
+          <mat-icon matSuffix>mail</mat-icon>
+          @if (emailField.invalid && (emailField.dirty || emailField.touched)) {
+            @if (emailField.hasError('required')) { <mat-error>El correo es obligatorio.</mat-error> }
+            @if (emailField.hasError('email')) { <mat-error>Correo inválido.</mat-error> }
+          }
+        </mat-form-field>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Celular</mat-label>
+            <input matInput [(ngModel)]="user.phone" name="phone" required pattern="^9[0-9]{8}$" #phoneField="ngModel">
+            <mat-icon matSuffix>smartphone</mat-icon>
+            <mat-hint>Ej: 987654321</mat-hint>
+            @if (phoneField.invalid && (phoneField.dirty || phoneField.touched)) {
+              @if (phoneField.hasError('required')) { <mat-error>Obligatorio.</mat-error> }
+              @if (phoneField.hasError('pattern')) { <mat-error>Debe empezar con 9 (9 dígitos).</mat-error> }
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Contraseña {{ isEditMode ? '(opcional)' : '' }}</mat-label>
+            <input matInput type="password" [(ngModel)]="user.passwordHash" name="passwordHash" [required]="!isEditMode" minlength="6" #passwordField="ngModel">
+            <mat-icon matSuffix>lock</mat-icon>
+            <mat-hint>{{ isEditMode ? 'Déjalo vacío para no cambiarla.' : 'Mínimo 6 caracteres.' }}</mat-hint>
+            @if (passwordField.invalid && (passwordField.dirty || passwordField.touched)) {
+              @if (passwordField.hasError('required')) { <mat-error>La contraseña es obligatoria.</mat-error> }
+              @if (passwordField.hasError('minlength')) { <mat-error>Mínimo 6 caracteres.</mat-error> }
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Rol del Usuario</mat-label>
+            <mat-select [(ngModel)]="user.role.idRole" name="role" required #roleField="ngModel">
+              @for (r of roles; track r.idRole) {
+                <mat-option [value]="r.idRole">{{ r.nameRole }}</mat-option>
+              }
+            </mat-select>
+            @if (roleField.invalid && (roleField.dirty || roleField.touched)) {
+              <mat-error>Selecciona un rol.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Idioma</mat-label>
+            <mat-select [(ngModel)]="user.preferredLanguage" name="preferredLanguage" required>
+              <mat-option value="ES">Español (ES)</mat-option>
+              <mat-option value="EN">Inglés (EN)</mat-option>
+              <mat-option value="PT">Portugués (PT)</mat-option>
+              <mat-option value="FR">Francés (FR)</mat-option>
+              <mat-option value="DE">Alemán (DE)</mat-option>
+              <mat-option value="IT">Italiano (IT)</mat-option>
+              <mat-option value="QC">Quechua (QC)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row" style="align-items: center; margin-top: 5px;">
+          <mat-form-field appearance="outline">
+            <mat-label>Puntos Acumulados</mat-label>
+            <input matInput type="number" [(ngModel)]="user.accumulatedPoints" name="accumulatedPoints" min="0" required>
+            <mat-icon matSuffix style="color: var(--cta-orange);">stars</mat-icon>
+          </mat-form-field>
+
+          <div style="display: flex; align-items: center; padding-left: 4px; padding-top: 4px;">
+            <mat-checkbox [(ngModel)]="user.biometricsActive" name="biometricsActive" color="primary">
+              Biometría (Huella/FaceID)
+            </mat-checkbox>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button mat-button type="button" routerLink="/dashboard/usuarios" [disabled]="saving">Cancelar</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid || saving">
+            @if (saving) {
+              <mat-spinner diameter="18" style="display:inline-block; margin-right:8px;"></mat-spinner>
+            }
+            {{ saving ? 'Guardando...' : 'Guardar Usuario' }}
+          </button>
+        </div>
+        
+      </form>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

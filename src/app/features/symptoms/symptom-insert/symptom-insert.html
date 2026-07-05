@@ -1,0 +1,57 @@
+<div class="form-page">
+  <mat-card class="form-card mat-elevation-z2">
+
+    <div class="form-card-header">
+      <div class="form-card-icon">
+        <mat-icon>coronavirus</mat-icon>
+      </div>
+      <h2 class="form-card-title">{{ isEditMode ? 'Editar Síntoma' : 'Nuevo Síntoma' }}</h2>
+      <p class="form-card-subtitle">Este síntoma podrá seleccionarse al registrar un reporte ciudadano.</p>
+    </div>
+
+    <mat-card-content>
+      @if (loading) {
+        <div class="form-loading">
+          <mat-spinner diameter="36"></mat-spinner>
+          <span>Cargando síntoma...</span>
+        </div>
+      } @else {
+        <form (ngSubmit)="onSave()" #form="ngForm">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Nombre del Síntoma</mat-label>
+            <input matInput
+                   [(ngModel)]="symptom.nameSymptom"
+                   name="nameSymptom"
+                   required
+                   minlength="3"
+                   maxlength="60"
+                   placeholder="Ej: Fiebre alta"
+                   #nameField="ngModel">
+            <mat-icon matSuffix>sick</mat-icon>
+            @if (nameField.invalid && (nameField.dirty || nameField.touched)) {
+              @if (nameField.hasError('required')) { <mat-error>El nombre del síntoma es obligatorio.</mat-error> }
+              @if (nameField.hasError('minlength')) { <mat-error>Debe tener al menos 3 caracteres.</mat-error> }
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Nivel de Gravedad</mat-label>
+            <mat-select [(ngModel)]="symptom.gravitylevel" name="gravitylevel" required>
+              @for (g of gravityOptions; track g.value) {
+                <mat-option [value]="g.value">{{ g.label }}</mat-option>
+              }
+            </mat-select>
+            <mat-hint>Del 1 (más leve) al 5 (más grave).</mat-hint>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-button type="button" routerLink="/dashboard/sintomas" [disabled]="saving">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || saving">
+              {{ saving ? 'Guardando...' : 'Guardar' }}
+            </button>
+          </div>
+        </form>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

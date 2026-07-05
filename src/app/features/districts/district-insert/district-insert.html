@@ -1,0 +1,52 @@
+<div class="form-page">
+  <mat-card class="form-card mat-elevation-z2">
+
+    <div class="form-card-header">
+      <div class="form-card-icon">
+        <mat-icon>location_city</mat-icon>
+      </div>
+      <h2 class="form-card-title">{{ isEditMode ? 'Editar Distrito' : 'Nuevo Distrito' }}</h2>
+      <p class="form-card-subtitle">
+        {{ isEditMode ? 'Actualiza el nombre de este distrito.' : 'Registra un nuevo distrito para asociar reportes y campañas.' }}
+      </p>
+    </div>
+
+    <mat-card-content>
+      @if (loading) {
+        <div class="form-loading">
+          <mat-spinner diameter="36"></mat-spinner>
+          <span>Cargando distrito...</span>
+        </div>
+      } @else {
+        <form (ngSubmit)="onSave()" #form="ngForm">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Nombre del Distrito</mat-label>
+            <input matInput
+                   [(ngModel)]="district.nameDistrict"
+                   name="nameDistrict"
+                   required
+                   minlength="3"
+                   maxlength="60"
+                   #nameField="ngModel">
+            <mat-icon matSuffix>edit_location_alt</mat-icon>
+            <mat-hint align="end">{{ district.nameDistrict?.length || 0 }}/60</mat-hint>
+            @if (nameField.invalid && (nameField.dirty || nameField.touched)) {
+              @if (nameField.hasError('required')) { <mat-error>El nombre del distrito es obligatorio.</mat-error> }
+              @if (nameField.hasError('minlength')) { <mat-error>Debe tener al menos 3 caracteres.</mat-error> }
+            }
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-button type="button" routerLink="/dashboard/distritos" [disabled]="saving">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || saving">
+              @if (saving) {
+                <mat-spinner diameter="18" style="display:inline-block; margin-right:8px;"></mat-spinner>
+              }
+              {{ saving ? 'Guardando...' : 'Guardar' }}
+            </button>
+          </div>
+        </form>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,135 @@
+<mat-sidenav-container class="layout-shell">
+
+  <!-- 📱 Menú lateral: solo se usa en pantallas chicas (ver main-layout.css) -->
+  <mat-sidenav #sidenav mode="over" class="mobile-sidenav" position="end">
+    <div class="sidenav-header">
+      <span>Menú</span>
+      <button mat-icon-button (click)="sidenav.close()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="sidenav-links">
+      <ng-container *ngTemplateOutlet="navLinks"></ng-container>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="main-navbar">
+
+      <!-- 🏠 El logo/título ahora es un botón que lleva al inicio del dashboard -->
+      <button class="brand-container" routerLink="/dashboard/inicio" aria-label="Ir al inicio">
+        <span class="brand-title">PrevDengue</span>
+        <span class="brand-slogan">Tu alerta puede salvar vidas.</span>
+      </button>
+
+      <span class="spacer"></span>
+
+      <div class="notification-buttons">
+        <button mat-flat-button class="btn-notify" (click)="activarNotificaciones()">
+          🔔 <span class="btn-text">Activar Notificaciones</span>
+        </button>
+
+        <button mat-stroked-button class="btn-test-alert" (click)="probarSistemaAlertas()">
+          <mat-icon>send</mat-icon>
+          <span class="btn-text">Probar Alerta (5s)</span>
+        </button>
+      </div>
+
+      <!-- 🖥️ Menú horizontal completo: visible solo en pantallas grandes -->
+      <div class="nav-buttons desktop-nav">
+        <ng-container *ngTemplateOutlet="navLinks"></ng-container>
+      </div>
+
+      <!-- 📱 Botón hamburguesa: visible solo en pantallas chicas -->
+      <button mat-icon-button class="mobile-menu-toggle" (click)="sidenav.toggle()" aria-label="Abrir menú">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <div class="content-container">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- ====================================================================
+     Plantilla con todos los enlaces de navegación, filtrados por rol.
+     Se reutiliza tanto en el menú horizontal (desktop) como en el
+     menú lateral (mobile) para no duplicar la lógica de hasRole().
+==================================================================== -->
+<ng-template #navLinks>
+  <button mat-button [matMenuTriggerFor]="reportesMenu">
+    <mat-icon>assessment</mat-icon> Reportes <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+
+  <mat-menu #reportesMenu="matMenu" class="custom-rounded-menu">
+    <button mat-menu-item routerLink="/dashboard/reportes">
+      <mat-icon style="color: var(--primary);">list_alt</mat-icon>
+      <span>Bandeja General</span>
+    </button>
+    @if (hasRole('ADMIN', 'BRIGADISTA')) {
+    <button mat-menu-item routerLink="/dashboard/queries">
+      <mat-icon style="color: var(--cta-orange);">dashboard</mat-icon>
+      <span>Reportes Filtrados (Dashboard)</span>
+    </button>
+    }
+    <button mat-menu-item routerLink="/dashboard/reportes/nuevo">
+      <mat-icon style="color: var(--success);">add_location</mat-icon>
+      <span>Registrar Nuevo</span>
+    </button>
+  </mat-menu>
+
+  @if (hasRole('ADMIN')) {
+  <button mat-button routerLink="/dashboard/usuarios"><mat-icon>people</mat-icon> Usuarios</button>
+  <button mat-button routerLink="/dashboard/roles"><mat-icon>admin_panel_settings</mat-icon> Roles</button>
+  <button mat-button routerLink="/dashboard/distritos"><mat-icon>location_city</mat-icon> Distritos</button>
+  }
+
+  @if (hasRole('ADMIN', 'BRIGADISTA')) {
+  <button mat-button routerLink="/dashboard/criaderos"><mat-icon>bug_report</mat-icon> Criaderos</button>
+  }
+
+  <button mat-button [matMenuTriggerFor]="sintomasMenu">
+    <mat-icon>coronavirus</mat-icon> Síntomas <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+
+  <mat-menu #sintomasMenu="matMenu" class="custom-rounded-menu">
+    <button mat-menu-item routerLink="/dashboard/sintomas/mas-frecuentes">
+      <mat-icon style="color: #60A5FA;">analytics</mat-icon>
+      <span>Síntomas Más Frecuentes</span>
+    </button>
+    @if (hasRole('ADMIN', 'BRIGADISTA')) {
+    <button mat-menu-item routerLink="/dashboard/sintomas">
+      <mat-icon style="color: var(--primary);">format_list_bulleted</mat-icon>
+      <span>Gestionar Catálogo</span>
+    </button>
+    <button mat-menu-item routerLink="/dashboard/sintomas/nuevo">
+      <mat-icon style="color: var(--success);">add_circle_outline</mat-icon>
+      <span>Agregar Nuevo</span>
+    </button>
+    }
+  </mat-menu>
+
+  @if (hasRole('ADMIN', 'BRIGADISTA')) {
+  <button mat-button routerLink="/dashboard/niveles-riesgo" class="btn-warning">
+    <mat-icon>warning</mat-icon> Riesgo
+  </button>
+  }
+  <button mat-button routerLink="/dashboard/cleaning-events" routerLinkActive="active-link" class="nav-link-white">
+    <mat-icon>volunteer_activism</mat-icon>
+    Eventos de Limpieza
+  </button>
+  @if (hasRole('ADMIN', 'BRIGADISTA')) {
+  <button mat-button routerLink="/dashboard/campaigns" routerLinkActive="active-link" class="nav-link-white">
+      <mat-icon>health_and_safety</mat-icon>
+      Campañas de Intervención
+  </button>
+  <button mat-button routerLink="/dashboard/predictive-alerts" routerLinkActive="active-link" class="nav-link-white">
+    <mat-icon>insights</mat-icon>
+    Alertas Predictivas
+  </button>
+  }
+  <button mat-button (click)="onLogout()" class="nav-link-white">
+    <mat-icon>logout</mat-icon> Cerrar sesión
+  </button>
+</ng-template>

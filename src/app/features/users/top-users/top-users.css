@@ -1,0 +1,48 @@
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: var(--bg-app);
+  border-radius: 8px;
+  border-left: 4px solid var(--cta-orange); /* Línea dorada/naranja a la izquierda */
+  transition: transform 0.2s ease;
+}
+
+.leaderboard-item:hover {
+  transform: translateX(5px); /* Pequeña animación al pasar el mouse */
+}
+
+.leaderboard-rank {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--cta-orange);
+  width: 50px;
+  text-align: center;
+}
+
+.leaderboard-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-left: 10px;
+}
+
+.leaderboard-email {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.leaderboard-score {
+  background-color: var(--cta-orange);
+  color: white; /* O var(--primary-dark) si quieres más contraste */
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+}

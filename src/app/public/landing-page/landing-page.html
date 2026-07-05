@@ -1,0 +1,142 @@
+<mat-toolbar color="primary" class="custom-navbar">
+  <div class="nav-brand">
+    <mat-icon class="logo-icon">shield</mat-icon>
+    <span class="brand-text">PrevDengue</span>
+  </div>
+  <span class="spacer"></span>
+  <div class="nav-links">
+    <a mat-button class="nav-item active" href="#">Inicio</a>
+    <a mat-button class="nav-item" href="#informacion">Información</a>
+    <a mat-button class="nav-item" href="#consultar-focos">Consultar Focos</a>
+    <a mat-button class="nav-item" href="#nosotros">Nosotros</a>
+    <button mat-flat-button class="btn-login-nav" routerLink="/login">Ingresar</button>
+  </div>
+</mat-toolbar>
+
+<!-- SECCIÓN 1: HERO (Inicio) -->
+<header class="hero-container">
+  <div class="hero-left">
+    <h1 class="hero-title">¿Has visto algún foco de dengue en tu zona?</h1>
+    <p class="hero-description">
+      Identifica, reporta y da seguimiento a los focos de reproducción del zancudo Aedes aegypti. Únete a la red ciudadana que protege a Lima de los brotes epidémicos.
+    </p>
+    <button mat-flat-button color="primary" class="btn-reportar" routerLink="/login">
+      REPORTAR FOCO (DEMO)
+    </button>
+    <p class="hero-footer-text">
+      Más de 100 reportes verificados este mes en Lima Metropolitana.
+    </p>
+  </div>
+  
+  <div class="hero-right">
+    <div class="map-preview-card">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d124855.12353384468!2d-77.02824!3d-12.04318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2spe!4v1715000000000!5m2!1ses-419!2spe" 
+        width="100%" height="100%" style="border:0; border-radius: 8px;" allowfullscreen="" loading="lazy">
+      </iframe>
+    </div>
+  </div>
+</header>
+
+<!-- SECCIÓN 2: INFORMACIÓN ("Ver Reportes" transformado) -->
+<section id="informacion" class="info-section">
+  <h2 class="section-title">¿Cómo combatir el Dengue juntos?</h2>
+  <p class="section-subtitle">Conoce las pautas básicas para identificar factores de riesgo y actuar a tiempo.</p>
+  
+  <div class="features-grid">
+    <mat-card class="feature-card">
+      <mat-card-header>
+        <div mat-card-avatar class="icon-avatar green-bg"><mat-icon>opacity</mat-icon></div>
+        <mat-card-title>Evita Agua Estancada</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>El zancudo deposita sus huevos en recipientes limpios u olvidados. Voltea baldes, cubre tanques y limpia floreros constantemente.</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="feature-card">
+      <mat-card-header>
+        <div mat-card-avatar class="icon-avatar blue-bg"><mat-icon>healing</mat-icon></div>
+        <mat-card-title>Reconoce Síntomas</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Fiebre alta, dolor articular severo, sarpullido y dolor detrás de los ojos. No te automediques; acude al centro de salud más cercano.</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="feature-card">
+      <mat-card-header>
+        <div mat-card-avatar class="icon-avatar red-bg"><mat-icon>campaign</mat-icon></div>
+        <mat-card-title>Alertas Tempranas</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Nuestra plataforma procesa reportes ciudadanos para coordinar con brigadas municipales jornadas de fumigación prioritarias.</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>
+
+<!-- SECCIÓN 3: CONSULTAR FOCOS & ANALÍTICA -->
+<section id="consultar-focos" class="analytics-section">
+  <h2 class="section-title">Monitoreo Epidemiológico en Tiempo Real</h2>
+  <p class="section-subtitle">Análisis predictivo de la distribución y densidad de casos reportados en la región.</p>
+
+  <div class="analytics-container">
+    <div class="analytics-text-box">
+      <h3>Distribución Semanal de Riesgo</h3>
+      <p>A través del cruce de datos climáticos y denuncias vecinales, identificamos los distritos con mayor probabilidad de brote.</p>
+      <ul class="stats-list">
+        <li><mat-icon class="text-red">warning</mat-icon> <strong>Zona Norte:</strong> Alta incidencia de recipientes sin tapa.</li>
+        <li><mat-icon class="text-orange">trending_up</mat-icon> <strong>Zona Este:</strong> Incremento del 12% en focos potenciales.</li>
+      </ul>
+    </div>
+
+    <!-- Gráficos Simulados mediante CSS -->
+    <div class="charts-card">
+      <h4>Reportes por Distrito (Junio 2026)</h4>
+      <div class="bar-chart">
+        <div class="bar-group">
+          <div class="bar red-bar" style="height: 85%;"><span>85</span></div>
+          <span class="bar-label">Comas</span>
+        </div>
+        <div class="bar-group">
+          <div class="bar orange-bar" style="height: 65%;"><span>65</span></div>
+          <span class="bar-label">SJL</span>
+        </div>
+        <div class="bar-group">
+          <div class="bar yellow-bar" style="height: 40%;"><span>40</span></div>
+          <span class="bar-label">Ate</span>
+        </div>
+        <div class="bar-group">
+          <div class="bar green-bar" style="height: 20%;"><span>20</span></div>
+          <span class="bar-label">Surco</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 4: NOSOTROS (Comunidad reemplazada) -->
+<section id="nosotros" class="about-section">
+  <h2 class="section-title">Sobre Nosotros</h2>
+  <p class="section-subtitle">Conoce al equipo detrás de la iniciativa tecnológica para la salud pública de Lima.</p>
+  
+  <div class="team-grid">
+    <div class="team-member">
+      <mat-icon class="member-avatar">account_circle</mat-icon>
+      <p class="role">Líder de Arquitectura y Frontend</p>
+      <p class="bio">Estudiante de Ingeniería de Software enfocado en soluciones de impacto social y arquitecturas web distribuidas.</p>
+    </div>
+    
+    <div class="team-member">
+      <mat-icon class="member-avatar">account_circle</mat-icon>
+      <p class="role">Especialista en Seguridad y UI/UX</p>
+      <p class="bio">Diseñador y desarrollador apasionado por crear experiencias intuitivas, seguras y accesibles para la ciudadanía.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer Fijo -->
+<footer class="main-footer">
+  <p>&copy; 2026 PrevDengue - Trabajo de Arquitectura de Aplicaciones Web. Todos los derechos reservados.</p>
+</footer>

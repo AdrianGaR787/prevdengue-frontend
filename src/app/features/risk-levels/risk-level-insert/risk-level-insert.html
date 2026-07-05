@@ -1,0 +1,61 @@
+<div class="form-page">
+  <mat-card class="form-card mat-elevation-z2">
+
+    <div class="form-card-header">
+      <div class="form-card-icon">
+        <mat-icon>warning</mat-icon>
+      </div>
+      <h2 class="form-card-title">{{ isEditMode ? 'Editar Nivel' : 'Nuevo Nivel de Riesgo' }}</h2>
+      <p class="form-card-subtitle">Define el nombre y el color con el que se mostrará este nivel en los reportes.</p>
+    </div>
+
+    <mat-card-content>
+      @if (loading) {
+        <div class="form-loading">
+          <mat-spinner diameter="36"></mat-spinner>
+          <span>Cargando nivel de riesgo...</span>
+        </div>
+      } @else {
+        <form (ngSubmit)="onSave()" #form="ngForm">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Nombre del Nivel</mat-label>
+            <input matInput
+                   [(ngModel)]="riskLevel.nameRiskLevel"
+                   name="nameRiskLevel"
+                   required
+                   minlength="3"
+                   maxlength="40"
+                   placeholder="Ej: Alto"
+                   #nameField="ngModel">
+            <mat-icon matSuffix>label</mat-icon>
+            @if (nameField.invalid && (nameField.dirty || nameField.touched)) {
+              @if (nameField.hasError('required')) { <mat-error>El nombre del nivel es obligatorio.</mat-error> }
+              @if (nameField.hasError('minlength')) { <mat-error>Debe tener al menos 3 caracteres.</mat-error> }
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Color asociado</mat-label>
+            <mat-select [(ngModel)]="riskLevel.colorRiskLevel" name="colorRiskLevel" required #colorField="ngModel">
+              @for (c of colorOptions; track c.value) {
+                <mat-option [value]="c.value">
+                  <span class="color-preview-dot" [style.background-color]="c.hex"></span>{{ c.value }}
+                </mat-option>
+              }
+            </mat-select>
+            @if (colorField.invalid && (colorField.dirty || colorField.touched)) {
+              <mat-error>Selecciona un color para este nivel.</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-button type="button" routerLink="/dashboard/niveles-riesgo" [disabled]="saving">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || saving">
+              {{ saving ? 'Guardando...' : 'Guardar' }}
+            </button>
+          </div>
+        </form>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

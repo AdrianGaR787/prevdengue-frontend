@@ -1,0 +1,110 @@
+<div class="insert-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ isEditMode ? 'Modificar Reporte' : 'Registrar Nuevo Reporte' }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="form-content">
+      @if (loading) {
+        <div class="form-loading">
+          <mat-spinner diameter="36"></mat-spinner>
+          <span>Cargando reporte...</span>
+        </div>
+      } @else {
+      <form (ngSubmit)="onSave()" #reportForm="ngForm">
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descripción del hallazgo</mat-label>
+          <textarea matInput [(ngModel)]="report.description" name="description" rows="3" required minlength="10" maxlength="100" placeholder="Ej: Llantas acumulando agua en el patio trasero" #descField="ngModel"></textarea>
+          <mat-hint align="end">{{report.description?.length || 0}}/100</mat-hint>
+          @if (descField.invalid && (descField.dirty || descField.touched)) {
+            @if (descField.hasError('required')) { <mat-error>La descripción es obligatoria.</mat-error> }
+            @if (descField.hasError('minlength')) { <mat-error>Sé un poco más específico (mínimo 10 caracteres).</mat-error> }
+          }
+        </mat-form-field>
+
+        <div style="margin-bottom: 8px;">
+          <button mat-stroked-button type="button" color="primary" (click)="usarUbicacionActual()" [disabled]="loadingLocation">
+            @if (loadingLocation) {
+              <mat-spinner diameter="18" style="display:inline-block; margin-right:8px;"></mat-spinner>
+            } @else {
+              <mat-icon style="vertical-align: middle; margin-right: 4px;">my_location</mat-icon>
+            }
+            {{ loadingLocation ? 'Detectando ubicación...' : 'Usar mi ubicación actual' }}
+          </button>
+        </div>
+
+        <div class="row" style="display: flex; gap: 15px;">
+          <mat-form-field appearance="outline" style="flex: 1;">
+            <mat-label>Latitud</mat-label>
+            <input matInput type="number" step="any" [(ngModel)]="report.latitude" name="latitude" required min="-18.5" max="-0.03" #latField="ngModel">
+            @if (latField.invalid && (latField.dirty || latField.touched)) {
+              <mat-error>Debe ser una coordenada válida dentro de Perú.</mat-error>
+            }
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" style="flex: 1;">
+            <mat-label>Longitud</mat-label>
+            <input matInput type="number" step="any" [(ngModel)]="report.longitude" name="longitude" required min="-81.4" max="-68.6" #lngField="ngModel">
+            @if (lngField.invalid && (lngField.dirty || lngField.touched)) {
+              <mat-error>Debe ser una coordenada válida dentro de Perú.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tipo de Criadero</mat-label>
+          <mat-select [(ngModel)]="report.hatcheryType.idHatcheryType" name="hatcheryType" required #hatcheryField="ngModel">
+            <mat-option [value]="1">Llantas abandonadas</mat-option>
+            <mat-option [value]="2">Baldes o cilindros sin tapa</mat-option>
+            <mat-option [value]="3">Piscinas sin mantenimiento</mat-option>
+            <mat-option [value]="4">Floreros con agua</mat-option>
+          </mat-select>
+          @if (hatcheryField.invalid && (hatcheryField.dirty || hatcheryField.touched)) {
+            <mat-error>Selecciona el tipo de criadero encontrado.</mat-error>
+          }
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Distrito</mat-label>
+          <mat-select [(ngModel)]="report.district.idDistrict" name="district" required #districtField="ngModel">
+            @for (d of distritos; track d.idDistrict) {
+              <mat-option [value]="d.idDistrict">{{ d.nameDistrict }}</mat-option>
+            }
+          </mat-select>
+          @if (districtField.invalid && (districtField.dirty || districtField.touched)) {
+            <mat-error>Selecciona el distrito donde se encuentra el foco.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Síntomas que presenta (Opcional)</mat-label>
+          <mat-select [(ngModel)]="selectedSymptoms" name="symptoms" multiple>
+            @for (s of sintomas; track s.idSymptom) {
+              <mat-option [value]="s.idSymptom">{{ s.nameSymptom }}</mat-option>
+            }
+          </mat-select>
+          <mat-hint>Marca esta opción solo si tú o alguien en tu hogar presenta síntomas.</mat-hint>
+        </mat-form-field>
+
+        <div style="margin-top: 10px; margin-bottom: 20px;">
+          <mat-checkbox [(ngModel)]="report.anonymous" name="anonymous" color="primary">
+            Deseo que este reporte sea anónimo
+          </mat-checkbox>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button mat-button type="button" routerLink="/dashboard/reportes" [disabled]="saving">Cancelar</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="reportForm.invalid || saving">
+            @if (saving) {
+              <mat-spinner diameter="18" style="display:inline-block; margin-right:8px;"></mat-spinner>
+            }
+            {{ saving ? 'Guardando...' : 'Guardar Reporte' }}
+          </button>
+        </div>
+
+      </form>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

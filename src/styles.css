@@ -1,0 +1,287 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
+:root {
+  /* 🔵 Colores Principales (Azules) */
+  --primary: #2563EB;
+  --primary-hover: #60A5FA;
+  --primary-dark: #1E40AF;
+  --primary-light: #DBEAFE;
+
+  /* 🟢 Colores de Éxito / Secundarios */
+  --success: #22C55E;
+  --success-light: #86EFAC;
+  --success-dark: #15803D;
+
+  /* 🟡🟠🔴 Colores de Alerta y Riesgo */
+  --warning: #FACC15;
+  --cta-orange: #FB923C;
+  --danger: #EF4444;
+
+  /* ⚪⚫ Colores Neutros y Escala de Grises */
+  --bg-app: #F8FAFC;
+  --text-main: #1E293B;
+  --text-muted: #64748B;
+  --border-light: #E2E8F0;
+  --white: #FFFFFF;
+  --black: #000000;
+}
+
+/* Configuración Global del Cuerpo */
+body {
+  margin: 0;
+  background-color: var(--bg-app); /* Fondo gris claro relajante */
+  color: var(--text-main); /* Gris oscuro para lectura */
+  font-family: 'Nunito Sans', sans-serif; /* Texto fluido y cercano */
+}
+
+/* 📌 Títulos con Poppins (Jerarquía Visual) */
+h1, h2, h3, h4, h5, h6, 
+.mat-mdc-card-title, 
+.mat-mdc-dialog-title {
+  font-family: 'Poppins', sans-serif !important;
+  color: var(--primary-dark); /* Títulos en Azul Profundo */
+  font-weight: 600;
+}
+
+/* 📌 Subtítulos con color tenue */
+.mat-mdc-card-subtitle, p {
+  color: var(--text-muted);
+}
+
+/* ⏳ Estados de carga y vacío reutilizables en listados (tablas, grids, etc.) */
+.loading-state, .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 16px;
+  color: var(--text-muted);
+  text-align: center;
+}
+.empty-state mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: var(--border-light);
+}
+.empty-state p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* 🃏 Tarjetas (Cards) - Limpias, redondeadas y con sombra suave */
+.mat-mdc-card {
+  border-radius: 16px !important;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05) !important;
+  background-color: var(--white);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efecto sutil al pasar el mouse por las tarjetas (Feedback visual) */
+.mat-mdc-card:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 🔘 Botones - Esquinas redondeadas (20px) y tipografía */
+.mdc-button, .mdc-raised-button, .mat-mdc-unelevated-button {
+  border-radius: 20px !important;
+  font-family: 'Nunito Sans', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   🛠️ CORRECCIÓN: BOTONES VS FORMULARIOS
+   ========================================================================== */
+
+/* 🔵 BOTONES PRIMARIOS (Solo los que tienen relieve "raised" o "unelevated") */
+.mat-mdc-raised-button.mat-primary, 
+.mat-mdc-unelevated-button.mat-primary {
+  background-color: var(--primary) !important;
+  color: var(--white) !important;
+}
+
+.mat-mdc-raised-button.mat-primary:hover, 
+.mat-mdc-unelevated-button.mat-primary:hover {
+  background-color: var(--primary-hover) !important;
+}
+
+/* 🟢 BOTONES SECUNDARIOS / ACCENT */
+.mat-mdc-raised-button.mat-accent, 
+.mat-mdc-unelevated-button.mat-accent {
+  background-color: var(--success) !important;
+  color: var(--white) !important;
+}
+
+/* 🔴 BOTONES DE PELIGRO / WARN */
+.mat-mdc-raised-button.mat-warn, 
+.mat-mdc-unelevated-button.mat-warn {
+  background-color: var(--danger) !important;
+  color: var(--white) !important;
+}
+
+/* ✨ BOTONES TRANSPARENTES (Para botones planos como "Cancelar") ✨ */
+.mat-mdc-button.mat-primary {
+  color: var(--primary) !important;
+  background-color: transparent !important;
+}
+.mat-mdc-button.mat-accent {
+  color: var(--success) !important;
+  background-color: transparent !important;
+}
+.mat-mdc-button.mat-warn {
+  color: var(--danger) !important;
+  background-color: transparent !important;
+}
+
+/* 📝 Inputs y Formularios (Bordes suaves) */
+.mdc-text-field--outlined .mdc-notched-outline {
+  border-radius: 12px !important;
+}
+/* ==========================================================================
+   🧩 ESTILOS PARA MENÚS DESPLEGABLES (MatMenu)
+   ========================================================================== */
+.custom-rounded-menu {
+  border-radius: 16px !important; /* Esquinas curvas según tu manual */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important; /* Sombra flotante */
+  padding: 8px 0 !important;
+}
+
+/* Color suave al pasar el mouse por las opciones del menú */
+.mat-mdc-menu-item:hover {
+  background-color: var(--bg-app) !important;
+}
+
+/* Ajuste de fuente para las opciones */
+.mat-mdc-menu-item span {
+  font-family: 'Nunito Sans', sans-serif !important;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   📋 FORMULARIOS - Contenedor y tarjeta estándar reutilizados en todos
+   los formularios de alta/edición (distritos, roles, síntomas, usuarios...)
+   ========================================================================== */
+.form-page {
+  display: flex;
+  justify-content: center;
+  padding: 32px 16px 48px;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 8px 8px 20px;
+  border-radius: 20px !important;
+}
+
+.form-card.form-card-wide {
+  max-width: 620px;
+}
+
+.form-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 16px 8px;
+}
+
+.form-card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-light);
+  margin-bottom: 12px;
+}
+.form-card-icon mat-icon {
+  color: var(--primary);
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.form-card-title {
+  font-size: 1.3rem;
+  margin: 0 0 2px;
+}
+.form-card-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.form-field-full {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+.form-row > * {
+  flex: 1;
+  min-width: 0;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 16px 0;
+}
+
+.form-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 16px;
+  color: var(--text-muted);
+}
+
+/* 🚨 Banner de error para formularios de login/registro (reemplaza el texto plano) */
+.error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #B91C1C;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 4px 0 16px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.error-banner mat-icon {
+  color: var(--danger);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Chips de color usados como preview en selects (ej: nivel de riesgo) */
+.color-preview-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .form-card {
+    padding: 4px 0 12px;
+  }
+}

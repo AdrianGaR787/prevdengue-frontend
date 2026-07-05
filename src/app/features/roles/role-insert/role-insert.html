@@ -1,0 +1,65 @@
+<div class="form-page">
+  <mat-card class="form-card form-card-wide mat-elevation-z2">
+
+    <div class="form-card-header">
+      <div class="form-card-icon">
+        <mat-icon>admin_panel_settings</mat-icon>
+      </div>
+      <h2 class="form-card-title">{{ isEditMode ? 'Editar Rol' : 'Nuevo Rol' }}</h2>
+      <p class="form-card-subtitle">Los roles definen qué puede ver y hacer cada tipo de usuario en el sistema.</p>
+    </div>
+
+    <mat-card-content>
+      @if (loading) {
+        <div class="form-loading">
+          <mat-spinner diameter="36"></mat-spinner>
+          <span>Cargando rol...</span>
+        </div>
+      } @else {
+        <form (ngSubmit)="onSave()" #form="ngForm">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Nombre del Rol</mat-label>
+            <input matInput
+                   [(ngModel)]="role.nameRole"
+                   name="nameRole"
+                   required
+                   minlength="3"
+                   maxlength="30"
+                   placeholder="Ej: ADMIN"
+                   #nameField="ngModel">
+            <mat-icon matSuffix>badge</mat-icon>
+            <mat-hint>Se guardará en mayúsculas automáticamente.</mat-hint>
+            @if (nameField.invalid && (nameField.dirty || nameField.touched)) {
+              @if (nameField.hasError('required')) { <mat-error>El nombre del rol es obligatorio.</mat-error> }
+              @if (nameField.hasError('minlength')) { <mat-error>Debe tener al menos 3 caracteres.</mat-error> }
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput
+                      [(ngModel)]="role.description"
+                      name="description"
+                      rows="3"
+                      required
+                      minlength="10"
+                      maxlength="200"
+                      #descField="ngModel"></textarea>
+            <mat-hint align="end">{{ role.description?.length || 0 }}/200</mat-hint>
+            @if (descField.invalid && (descField.dirty || descField.touched)) {
+              @if (descField.hasError('required')) { <mat-error>La descripción es obligatoria.</mat-error> }
+              @if (descField.hasError('minlength')) { <mat-error>Describe brevemente el rol (mínimo 10 caracteres).</mat-error> }
+            }
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-button type="button" routerLink="/dashboard/roles" [disabled]="saving">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || saving">
+              {{ saving ? 'Guardando...' : 'Guardar' }}
+            </button>
+          </div>
+        </form>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>
