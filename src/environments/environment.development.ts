@@ -1,6 +1,7 @@
 export const environment = {
-    production: false,
-    base: '/api' ,
+    production: true,
+    //base: '/api' ,
+    base: 'https://prevdengue.onrender.com',
 
     firebase: {
     apiKey: "AIzaSyB4Z6W1VQAgzFTxUGtxhWNO485SwpQqiXg",
